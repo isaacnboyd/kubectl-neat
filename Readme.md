@@ -55,7 +55,7 @@ kubectl neat -f ./my-pod.json --output yaml
 
 ### Kubernetes - kubectl get wrapper
 
-This mode is invoked by calling the `get` subcommand, i.e `kubectl neat get ...`. It is a convenience to run `kubectl get` and then `kubectl neat` the output in a single command. It accepts any argument that `kubectl get` accepts and passes those arguments as is to `kubectl get`. Since it executes `kubectl`, it need to be able to find it in the path.
+This mode is invoked by calling the `get` subcommand, i.e `kubectl neat get ...`. It is a convenience to run `kubectl get` and then `kubectl neat` the output in a single command. It accepts any argument that `kubectl get` accepts and passes those arguments as is to `kubectl get`. Since it executes `kubectl`, it needs to be able to find it in the path.
 
 Examples:
 ```bash

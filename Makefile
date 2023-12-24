@@ -34,7 +34,7 @@ goreleaserflags = --skip-publish --snapshot
 ifdef publish
 	goreleaserflags =
 endif
-# relase always re-builds (no dependencies on purpose)
+# release always re-builds (no dependencies on purpose)
 goreleaser: $(SRC)
 	goreleaser --rm-dist $(goreleaserflags) 
 
