@@ -150,6 +150,11 @@ func neatServiceAccount(in string) (string, error) {
 	return in, nil
 }
 
+func neatService(in string) (string, error) {
+	// do nothing
+	return in, nil
+}
+
 // neatEmpty removes all zero length elements in the json
 func neatEmpty(in string) (string, error) {
 	var err error

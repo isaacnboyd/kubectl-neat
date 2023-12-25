@@ -272,6 +272,76 @@ func TestNeatServiceAccount(t *testing.T) {
 	}
 }
 
+func TestNeatService(t *testing.T) {
+	cases := []struct {
+		title  string
+		data   string
+		expect string
+	}{
+		{
+			title: "service with clusterIPs",
+			data:`{
+				"apiVersion": "v1",
+				"kind": "Service",
+				"metadata": {"labels":{"component":"apiserver","provider":"kubernetes"},"name":"kubernetes","namespace":"default"},
+				"spec": {
+					"clusterIP": "10.96.0.1",
+					"clusterIPs": [
+						"10.96.0.1"
+					],
+					"internalTrafficPolicy": "Cluster",
+					"ipFamilies": [
+						"IPv4"
+					],
+					"ipFamilyPolicy": "SingleStack",
+					"ports": [
+						{
+							"name": "https",
+							"port": 443,
+							"targetPort": 8443
+						}
+					]
+				}
+			}`,
+			expect: `{
+				"apiVersion": "v1",
+				"kind": "Service",
+				"metadata": {"labels":{"component":"apiserver","provider":"kubernetes"},"name":"kubernetes","namespace":"default"},
+				"spec": {
+					"internalTrafficPolicy": "Cluster",
+					"ipFamilies": [
+						"IPv4"
+					],
+					"ipFamilyPolicy": "SingleStack",
+					"ports": [
+						{
+							"name": "https",
+							"port": 443,
+							"targetPort": 8443
+						}
+					]
+				}
+			}`,
+		},
+	}
+	for _, c := range cases {
+		resJSON, err := neatService(c.data)
+		if err != nil {
+			t.Errorf("error in neatService for case '%s': %v", c.title, err)
+			continue
+		}
+		equal, err := testutil.JSONEqual(resJSON, c.expect)
+		if err != nil {
+			t.Errorf("error in JSONEqual for case '%s': %v", c.title, err)
+			continue
+		}
+		if !equal {
+			t.Errorf("test case '%s' failed. want: '%s' have: '%s'", c.title, c.expect, resJSON)
+		}
+
+	}
+}
+
 func TestNeatEmpty(t *testing.T) {
 	cases := []struct {
 		title  string
