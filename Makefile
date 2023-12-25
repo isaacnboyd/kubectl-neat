@@ -30,13 +30,13 @@ dist/kubectl-neat_%: $(SRC)
 	GOOS=$(call underscore,$*,1) GOARCH=$(call underscore,$*,2) go build -o dist/$(@F)
 
 # release by default will not publish. run with `publish=1` to publish
-goreleaserflags = --skip-publish --snapshot
+goreleaserflags = --skip=publish --snapshot
 ifdef publish
 	goreleaserflags =
 endif
 # release always re-builds (no dependencies on purpose)
 goreleaser: $(SRC)
-	goreleaser --rm-dist $(goreleaserflags) 
+	goreleaser --clean $(goreleaserflags) 
 
 dist/kubectl-neat_darwin_arm64.tar.gz dist/kubectl-neat_darwin_amd64.tar.gz dist/kubectl-neat_linux_arm64.tar.gz dist/kubectl-neat_linux_amd64.tar.gz dist/checksums.txt: goreleaser
 	# no op recipe
