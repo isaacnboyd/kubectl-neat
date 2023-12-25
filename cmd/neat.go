@@ -77,6 +77,12 @@ func Neat(in string) (string, error) {
 			return draft, fmt.Errorf("error in neatServiceAccount : %v", err)
 		}
 	}
+	if kind == "Service" {
+		draft, err = neatService(draft)
+		if err != nil {
+			return draft, fmt.Errorf("error in neatService : %v", err)
+		}
+	}
 
 	// general neating
 	draft, err = neatMetadata(draft)
@@ -151,8 +157,10 @@ func neatServiceAccount(in string) (string, error) {
 }
 
 func neatService(in string) (string, error) {
-	// do nothing
-	return in, nil
+	var err error
+	in, err = sjson.Delete(in, "spec.clusterIP")
+	//in, err = sjson.Delete(in, "spec.clusterIPs")
+	return in, err
 }
 
 // neatEmpty removes all zero length elements in the json
